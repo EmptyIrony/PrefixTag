@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.hycraft.lobby.tag.prefixtag.dao.mapper.PlayerInfoMapper">
+    <resultMap id="player_info" type="cn.hycraft.lobby.tag.prefixtag.dao.result.PlayerInfoResult">
+        <id property="uuid" column="uuid"/>
+        <result property="currentTag" column="current_tag"/>
+        <result property="unlockedTag" column="unlocked_tag" />
+    </resultMap>
+
+    <sql id="selectAll">
+        SELECT uuid, current_tag, unlocked_tag FROM player_info
+    </sql>
+
+    <sql id="whereUuid">
+        <where>
+            AND uuid = #{uuid}
+        </where>
+    </sql>
+
+    <select id="selectPlayerByUuid" parameterType="String" resultMap="player_info">
+        <include refid="selectAll"/>
+        <include refid="whereUuid"/>
+    </select>
+
+    <update id="updatePlayerWear" parameterType="cn.hycraft.lobby.tag.prefixtag.dao.result.PlayerInfoResult">
+        UPDATE player_info
+        <set>current_tag = #{currentTag}</set>
+        <include refid="whereUuid"/>
+    </update>
+
+    <update id="updatePlayerUnlock" parameterType="cn.hycraft.lobby.tag.prefixtag.dao.result.PlayerInfoResult">
+        UPDATE player_info
+        <set>unlocked_tag = #{unlockedTag}</set>
+        <include refid="whereUuid"/>
+    </update>
+
+    <insert id="insertPlayerData" parameterType="cn.hycraft.lobby.tag.prefixtag.dao.result.PlayerInfoResult">
+        INSERT INTO player_info(uuid, current_tag, unlocked_tag) VALUES(#{uuid}, #{currentTag}, #{unlockedTag})
+    </insert>
+</mapper>

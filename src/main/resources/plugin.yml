@@ -1,0 +1,8 @@
+name: PrefixTag
+version: '${project.version}'
+main: cn.hycraft.lobby.tag.prefixtag.PrefixTag
+api-version: 1.17
+authors: [ EmptyIrony ]
+description: The Prefix Tag
+depend:
+  - HyCraftCore
