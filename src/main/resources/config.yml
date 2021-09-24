@@ -2,6 +2,7 @@ tags:
   1st:
     displayName: "一周年称号"
     realDisplay: "一周年"
+    material: "NAME_TAG"
     descriptions:
       - ""
       - "这是给"

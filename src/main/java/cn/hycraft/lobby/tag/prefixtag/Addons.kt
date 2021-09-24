@@ -3,6 +3,7 @@ package cn.hycraft.lobby.tag.prefixtag
 import cn.hycraft.lobby.tag.prefixtag.data.PlayerInfo
 import net.minecraft.server.v1_8_R3.*
 import org.bukkit.Bukkit
+import org.bukkit.Material
 import org.bukkit.craftbukkit.v1_8_R3.CraftWorld
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer
 import org.bukkit.entity.Player
