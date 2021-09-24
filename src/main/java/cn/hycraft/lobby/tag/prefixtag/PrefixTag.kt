@@ -78,8 +78,8 @@ class PrefixTag: JavaPlugin(){
         val section = config.getConfigurationSection("tags")
         for (key in section.getKeys(false)) {
             val tagConfig = section.getConfigurationSection(key)
-            val displayName = tagConfig.getString("displayName") ?: continue
-            val realDisplay = tagConfig.getString("realDisplay") ?: continue
+            val displayName = (tagConfig.getString("displayName") ?: continue).colored()
+            val realDisplay = (tagConfig.getString("realDisplay") ?: continue).colored()
             val descriptions = tagConfig.getStringList("descriptions") ?: continue
             val materialStr = tagConfig.getString("material") ?: continue
 
