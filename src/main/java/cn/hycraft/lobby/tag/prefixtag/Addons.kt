@@ -31,7 +31,7 @@ fun Player.refreshTag() {
 
     val spawnPacket = PacketPlayOutSpawnEntityLiving(armorStand)
     val metaPacket = PacketPlayOutEntityMetadata(armorStand.id, armorStand.dataWatcher, false)
-    val attachPacket = PacketPlayOutAttachEntity(0, (player as CraftPlayer).handle, armorStand)
+    val attachPacket = PacketPlayOutAttachEntity(0, armorStand, (player as CraftPlayer).handle)
 
     for (target in Bukkit.getOnlinePlayers()) {
         val entityPlayer = (target as CraftPlayer).handle

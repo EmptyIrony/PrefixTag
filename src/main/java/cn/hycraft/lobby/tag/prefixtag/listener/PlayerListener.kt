@@ -23,7 +23,7 @@ object PlayerListener: Listener{
 
             val spawnPacket = PacketPlayOutSpawnEntityLiving(entry.value)
             val metaPacket = PacketPlayOutEntityMetadata(entry.value.id, entry.value.dataWatcher, false)
-            val attachPacket = PacketPlayOutAttachEntity(0, (player as CraftPlayer).handle, entry.value)
+            val attachPacket = PacketPlayOutAttachEntity(0, entry.value, (player as CraftPlayer).handle)
 
             val connection = (event.player as CraftPlayer).handle.playerConnection
             connection.sendPacket(spawnPacket)
