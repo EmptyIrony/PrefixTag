@@ -32,6 +32,7 @@ class PrefixTag: JavaPlugin(){
             return playerService
         }
 
+        @JvmStatic
         val cachedEntity = ConcurrentHashMap<UUID, EntityArmorStand>()
     }
 
