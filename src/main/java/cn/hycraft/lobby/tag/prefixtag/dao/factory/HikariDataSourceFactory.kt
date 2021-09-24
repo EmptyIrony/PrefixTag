@@ -34,7 +34,7 @@ class HikariDataSourceFactory : UnpooledDataSourceFactory() {
     }
 
     init {
-        val config = HikariConfig("${PrefixTag.INSTANCE.dataFolder.name}/hikari.properties")
+        val config = HikariConfig("${PrefixTag.INSTANCE.dataFolder}/hikari.properties")
         this.dataSource = HikariDataSource(config)
     }
 }
