@@ -89,6 +89,7 @@ class PrefixTag: JavaPlugin(){
                 tag.descriptions.add(description.colored())
             }
 
+            println("加载了 $key")
             Tag.cache[key] = tag
         }
     }
