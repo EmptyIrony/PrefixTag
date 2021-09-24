@@ -21,6 +21,7 @@ class PrefixTag: JavaPlugin(){
         @JvmStatic
         lateinit var INSTANCE: PrefixTag
 
+        @JvmStatic
         private lateinit var playerService: PlayerService
         @JvmStatic
         fun getPlayerService(): PlayerService{
