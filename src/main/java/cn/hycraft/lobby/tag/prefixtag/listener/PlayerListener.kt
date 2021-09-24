@@ -3,37 +3,37 @@ package cn.hycraft.lobby.tag.prefixtag.listener
 import cn.hycraft.lobby.tag.prefixtag.PrefixTag
 import cn.hycraft.lobby.tag.prefixtag.event.TagLoadedEvent
 import cn.hycraft.lobby.tag.prefixtag.refreshTag
-import net.minecraft.server.v1_8_R3.*
+import net.minecraft.server.v1_8_R3.PacketPlayOutAttachEntity
+import net.minecraft.server.v1_8_R3.PacketPlayOutEntityDestroy
+import net.minecraft.server.v1_8_R3.PacketPlayOutEntityMetadata
+import net.minecraft.server.v1_8_R3.PacketPlayOutSpawnEntityLiving
 import org.bukkit.Bukkit
-import org.bukkit.craftbukkit.v1_8_R3.CraftWorld
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.player.PlayerQuitEvent
 
-object PlayerListener: Listener{
+object PlayerListener : Listener {
 
     @EventHandler
     fun onJoin(event: PlayerJoinEvent) {
         PrefixTag.getPlayerService().loadPlayerInfo(event.player.uniqueId)
 
         Bukkit.getScheduler().scheduleSyncDelayedTask(PrefixTag.INSTANCE, {
+            for (entry in PrefixTag.cachedEntity.entries) {
+                val player = Bukkit.getPlayer(entry.key) ?: continue
+                val armorStand = entry.value
 
-                for (entry in PrefixTag.cachedEntity.entries) {
-                    val player = Bukkit.getPlayer(entry.key) ?: continue
-                    val armorStand = entry.value
+                val spawnPacket = PacketPlayOutSpawnEntityLiving(armorStand)
+                val metaPacket = PacketPlayOutEntityMetadata(armorStand.id, armorStand.dataWatcher, false)
+                val attachPacket = PacketPlayOutAttachEntity(0, armorStand, (player as CraftPlayer).handle)
 
-                    val spawnPacket = PacketPlayOutSpawnEntityLiving(armorStand)
-                    val metaPacket = PacketPlayOutEntityMetadata(armorStand.id, armorStand.dataWatcher, false)
-                    val attachPacket = PacketPlayOutAttachEntity(0, armorStand, (player as CraftPlayer).handle)
-
-                    val connection = (event.player as CraftPlayer).handle.playerConnection
-                    connection.sendPacket(spawnPacket)
-                    connection.sendPacket(metaPacket)
-                    connection.sendPacket(attachPacket)
-                }
-
+                val connection = (event.player as CraftPlayer).handle.playerConnection
+                connection.sendPacket(spawnPacket)
+                connection.sendPacket(metaPacket)
+                connection.sendPacket(attachPacket)
+            }
         }, 20L)
     }
 
