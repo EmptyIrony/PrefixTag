@@ -5,6 +5,7 @@ import cn.hycraft.lobby.tag.prefixtag.dao.mapper.PlayerInfoMapper
 import cn.hycraft.lobby.tag.prefixtag.dao.service.PlayerService
 import cn.hycraft.lobby.tag.prefixtag.data.PlayerInfo
 import cn.hycraft.lobby.tag.prefixtag.event.TagLoadedEvent
+import org.bukkit.Bukkit
 import java.util.*
 import java.util.concurrent.Executors
 
@@ -12,6 +13,8 @@ class PlayerServiceImpl: PlayerService{
     private val service = Executors.newScheduledThreadPool(2)
 
     override fun loadPlayerInfo(uuid: UUID) {
+        val player = Bukkit.getPlayer(uuid) ?: return
+
         service.submit {
             HikariDataSourceFactory.getSqlSessionFactory().openSession(true).use { session ->
                 val mapper = session.getMapper(PlayerInfoMapper::class.java)
@@ -22,7 +25,7 @@ class PlayerServiceImpl: PlayerService{
                     }
                     PlayerInfo.cache[uuid] = info
 
-                    TagLoadedEvent(info).callEvent()
+                    TagLoadedEvent(player).callEvent()
 
                     return@submit
                 }
@@ -32,7 +35,7 @@ class PlayerServiceImpl: PlayerService{
 
                 PlayerInfo.cache[uuid] = info
 
-                TagLoadedEvent(info).callEvent()
+                TagLoadedEvent(player).callEvent()
 
             }
         }

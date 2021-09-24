@@ -1,11 +1,11 @@
 package cn.hycraft.lobby.tag.prefixtag.event
 
-import cn.hycraft.lobby.tag.prefixtag.data.PlayerInfo
 import org.bukkit.Bukkit
+import org.bukkit.entity.Player
 import org.bukkit.event.Event
 import org.bukkit.event.HandlerList
 
-class TagLoadedEvent(val info: PlayerInfo): Event(){
+class TagLoadedEvent(val player: Player): Event(){
     companion object{
         @JvmStatic
         var HANDLER_LIST = HandlerList()

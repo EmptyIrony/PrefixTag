@@ -9,7 +9,12 @@ import cn.hycraft.lobby.tag.prefixtag.dao.factory.HikariDataSourceFactory
 import cn.hycraft.lobby.tag.prefixtag.dao.service.PlayerService
 import cn.hycraft.lobby.tag.prefixtag.dao.service.impl.PlayerServiceImpl
 import cn.hycraft.lobby.tag.prefixtag.data.Tag
+import net.minecraft.server.v1_8_R3.EntityArmorStand
+import org.bukkit.Material
 import org.bukkit.plugin.java.JavaPlugin
+import java.util.*
+import java.util.concurrent.ConcurrentHashMap
+import kotlin.collections.HashMap
 
 class PrefixTag: JavaPlugin(){
     companion object {
@@ -25,6 +30,8 @@ class PrefixTag: JavaPlugin(){
             playerService = PlayerServiceImpl()
             return playerService
         }
+
+        val cachedEntity = ConcurrentHashMap<UUID, EntityArmorStand>()
     }
 
     override fun onEnable() {
@@ -67,18 +74,15 @@ class PrefixTag: JavaPlugin(){
             val displayName = tagConfig.getString("displayName") ?: continue
             val realDisplay = tagConfig.getString("realDisplay") ?: continue
             val descriptions = tagConfig.getStringList("descriptions") ?: continue
-            val claimStartTime = tagConfig.getLong("claimStartTime")
-            val claimEndTime = tagConfig.getLong("claimEndTime")
+            val materialStr = tagConfig.getString("material") ?: continue
 
             val tag = Tag(key)
             tag.displayName = displayName
             tag.realDisplay = realDisplay
+            tag.icon = Material.valueOf(materialStr)
             for (description in descriptions) {
                 tag.descriptions.add(description.colored())
             }
-
-            tag.claimStartTime = claimStartTime
-            tag.claimEndTime = claimEndTime
 
             Tag.cache[key] = tag
         }
