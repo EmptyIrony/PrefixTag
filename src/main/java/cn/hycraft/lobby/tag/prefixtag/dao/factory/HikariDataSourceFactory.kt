@@ -6,6 +6,7 @@ import com.zaxxer.hikari.HikariDataSource
 import org.apache.ibatis.datasource.unpooled.UnpooledDataSourceFactory
 import org.apache.ibatis.session.SqlSessionFactory
 import org.apache.ibatis.session.SqlSessionFactoryBuilder
+import java.io.File
 import java.io.IOException
 
 
@@ -33,7 +34,7 @@ class HikariDataSourceFactory : UnpooledDataSourceFactory() {
     }
 
     init {
-        val config = HikariConfig("hikari.properties")
+        val config = HikariConfig("${PrefixTag.INSTANCE.dataFolder.name}/hikari.properties")
         this.dataSource = HikariDataSource(config)
     }
 }
