@@ -18,18 +18,23 @@ object PlayerListener: Listener{
     fun onJoin(event: PlayerJoinEvent) {
         PrefixTag.getPlayerService().loadPlayerInfo(event.player.uniqueId)
 
-        for (entry in PrefixTag.cachedEntity.entries) {
-            val player = Bukkit.getPlayer(entry.key) ?: continue
+        Bukkit.getScheduler().scheduleSyncDelayedTask(PrefixTag.INSTANCE, {
 
-            val spawnPacket = PacketPlayOutSpawnEntityLiving(entry.value)
-            val metaPacket = PacketPlayOutEntityMetadata(entry.value.id, entry.value.dataWatcher, false)
-            val attachPacket = PacketPlayOutAttachEntity(0, entry.value, (player as CraftPlayer).handle)
+                for (entry in PrefixTag.cachedEntity.entries) {
+                    val player = Bukkit.getPlayer(entry.key) ?: continue
+                    val armorStand = entry.value
 
-            val connection = (event.player as CraftPlayer).handle.playerConnection
-            connection.sendPacket(spawnPacket)
-            connection.sendPacket(metaPacket)
-            connection.sendPacket(attachPacket)
-        }
+                    val spawnPacket = PacketPlayOutSpawnEntityLiving(armorStand)
+                    val metaPacket = PacketPlayOutEntityMetadata(armorStand.id, armorStand.dataWatcher, false)
+                    val attachPacket = PacketPlayOutAttachEntity(0, armorStand, (player as CraftPlayer).handle)
+
+                    val connection = (event.player as CraftPlayer).handle.playerConnection
+                    connection.sendPacket(spawnPacket)
+                    connection.sendPacket(metaPacket)
+                    connection.sendPacket(attachPacket)
+                }
+
+        }, 20L)
     }
 
     @EventHandler
