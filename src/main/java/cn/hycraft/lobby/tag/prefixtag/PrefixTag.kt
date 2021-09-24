@@ -5,6 +5,7 @@ import cn.hycraft.common.util.dependencies.Dependency
 import cn.hycraft.common.util.dependencies.DependencyManager
 import cn.hycraft.common.util.dependencies.loaders.LoaderType
 import cn.hycraft.common.util.dependencies.loaders.ReflectionClassLoader
+import cn.hycraft.core.hycraftcore.HyCraftSpigotCore
 import cn.hycraft.lobby.tag.prefixtag.dao.factory.HikariDataSourceFactory
 import cn.hycraft.lobby.tag.prefixtag.dao.service.PlayerService
 import cn.hycraft.lobby.tag.prefixtag.dao.service.impl.PlayerServiceImpl
@@ -66,6 +67,8 @@ class PrefixTag: JavaPlugin(){
 
         HikariDataSourceFactory.getSqlSessionFactory()
         this.loadConfig()
+
+        HyCraftSpigotCore.instance.honcho.registerCommand(PrefixTagCommand)
     }
 
     private fun loadConfig() {

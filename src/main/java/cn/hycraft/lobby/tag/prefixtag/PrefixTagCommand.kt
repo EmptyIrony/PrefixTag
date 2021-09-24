@@ -10,7 +10,7 @@ import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 
 @CommandMeta(label = ["tag"])
-class PrefixTagCommand {
+object PrefixTagCommand {
 
     fun execute(player: Player) {
         MainMenu().openMenu(player)
