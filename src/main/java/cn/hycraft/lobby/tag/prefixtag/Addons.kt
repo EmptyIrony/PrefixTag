@@ -28,6 +28,7 @@ fun Player.refreshTag() {
     armorStand.customName = tag.realDisplay
     armorStand.customNameVisible = true
     armorStand.isInvisible = true
+    armorStand.isSmall = true
 
     val spawnPacket = PacketPlayOutSpawnEntityLiving(armorStand)
     val metaPacket = PacketPlayOutEntityMetadata(armorStand.id, armorStand.dataWatcher, false)
