@@ -10,6 +10,7 @@ import cn.hycraft.lobby.tag.prefixtag.dao.factory.HikariDataSourceFactory
 import cn.hycraft.lobby.tag.prefixtag.dao.service.PlayerService
 import cn.hycraft.lobby.tag.prefixtag.dao.service.impl.PlayerServiceImpl
 import cn.hycraft.lobby.tag.prefixtag.data.Tag
+import cn.hycraft.lobby.tag.prefixtag.listener.PlayerListener
 import net.minecraft.server.v1_8_R3.EntityArmorStand
 import org.bukkit.Material
 import org.bukkit.plugin.java.JavaPlugin
@@ -69,6 +70,7 @@ class PrefixTag: JavaPlugin(){
         this.loadConfig()
 
         HyCraftSpigotCore.instance.honcho.registerCommand(PrefixTagCommand)
+        this.server.pluginManager.registerEvents(PlayerListener, this)
     }
 
     private fun loadConfig() {
