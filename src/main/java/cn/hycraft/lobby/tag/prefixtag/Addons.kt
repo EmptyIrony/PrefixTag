@@ -11,6 +11,14 @@ import org.bukkit.entity.Player
 fun Player.refreshTag() {
     val info = PlayerInfo.cache[this.uniqueId] ?: return
     val player = Bukkit.getPlayer(info.uuid) ?: return
+    if (!player.isOnline) {
+        return
+    }
+
+    val vanish = this.isVanish()
+    if (vanish) {
+        return
+    }
 
     //移除原先显示的前缀
     val remove = PrefixTag.cachedEntity.remove(player.uniqueId)
@@ -23,7 +31,7 @@ fun Player.refreshTag() {
 
     val tag = info.currentTag ?: return
 
-    val armorStand = EntityArmorStand((player.world as CraftWorld).handle)
+    val armorStand = EntityArmorStand((this.world as CraftWorld).handle)
 
     armorStand.customName = tag.realDisplay
     armorStand.customNameVisible = true
@@ -32,7 +40,7 @@ fun Player.refreshTag() {
 
     val spawnPacket = PacketPlayOutSpawnEntityLiving(armorStand)
     val metaPacket = PacketPlayOutEntityMetadata(armorStand.id, armorStand.dataWatcher, false)
-    val attachPacket = PacketPlayOutAttachEntity(0, armorStand, (player as CraftPlayer).handle)
+    val attachPacket = PacketPlayOutAttachEntity(0, armorStand, (this as CraftPlayer).handle)
 
     for (target in Bukkit.getOnlinePlayers()) {
         val entityPlayer = (target as CraftPlayer).handle
@@ -42,4 +50,14 @@ fun Player.refreshTag() {
     }
 
     PrefixTag.cachedEntity[player.uniqueId] = armorStand
+}
+
+fun Player.isVanish(): Boolean {
+    for (value in this.getMetadata("vanished")) {
+        if (value.asBoolean()) {
+            return true
+        }
+    }
+
+    return false
 }

@@ -3,6 +3,7 @@ package cn.hycraft.lobby.tag.prefixtag.listener
 import cn.hycraft.lobby.tag.prefixtag.PrefixTag
 import cn.hycraft.lobby.tag.prefixtag.event.TagLoadedEvent
 import cn.hycraft.lobby.tag.prefixtag.refreshTag
+import de.myzelyam.api.vanish.PlayerVanishStateChangeEvent
 import net.minecraft.server.v1_8_R3.PacketPlayOutAttachEntity
 import net.minecraft.server.v1_8_R3.PacketPlayOutEntityDestroy
 import net.minecraft.server.v1_8_R3.PacketPlayOutEntityMetadata
@@ -51,8 +52,27 @@ object PlayerListener : Listener {
     }
 
     @EventHandler
+    fun onVanishToggle(event: PlayerVanishStateChangeEvent) {
+        if (event.isVanishing) {
+            val player = Bukkit.getPlayer(event.uuid) ?: return
+            val remove = PrefixTag.cachedEntity.remove(player.uniqueId)
+            remove?.let {
+                val destroyPacket = PacketPlayOutEntityDestroy(it.id)
+                Bukkit.getOnlinePlayers().forEach { target ->
+                    (target as CraftPlayer).handle.playerConnection.sendPacket(destroyPacket)
+                }
+            }
+
+        } else {
+            Bukkit.getPlayer(event.uuid)?.refreshTag()
+        }
+    }
+
+    @EventHandler
     fun onLoaded(event: TagLoadedEvent) {
-        event.player.refreshTag()
+        Bukkit.getScheduler().runTaskLaterAsynchronously(PrefixTag.INSTANCE, {
+            event.player.refreshTag()
+        }, 20L)
     }
 
 }

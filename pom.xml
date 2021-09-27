@@ -102,6 +102,11 @@
 
     <dependencies>
         <dependency>
+            <groupId>cn.hycraft.plugin</groupId>
+            <artifactId>sv</artifactId>
+            <version>1.0</version>
+        </dependency>
+        <dependency>
             <groupId>org.mybatis</groupId>
             <artifactId>mybatis</artifactId>
             <version>3.5.7</version>
