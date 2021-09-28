@@ -8,7 +8,7 @@ import org.bukkit.entity.Player
 
 class MainMenu: Menu() {
     override fun getTitle(p0: Player?): String {
-        return "prefix_tag"
+        return "称号选择"
     }
 
     override fun getButtons(player: Player): MutableMap<Int, Button> {
